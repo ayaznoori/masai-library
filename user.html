@@ -5,8 +5,124 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Page</title>
+    <link rel="stylesheet" href="./styles/user.css">
 </head>
 <body>
+    <div id="filter-item">
+        <label for="genre">Genre</label>
+        <select name="genre" id="genre" onchange="changegenre()">
+            <option value="--">--</option>
+            <option value="science">Science</option>
+            <option value="fiction">Fiction</option>
+            <option value="history">History</option>
+            <option value="tech">Tech</option>
+            <option value="business">Business</option>
+        </select>
+        <label for="cost">Cost</label>
+        <select name="cost" id="cost" onchange="pricefun()">
+            <option value="--">--</option>
+            <option value="asc">low to high</option>
+            <option value="desc">high to low</option>
+        </select>
+    </div>
+    <div id="card">
+
+    </div>
     
 </body>
 </html>
+<script>
+     fetchdata();
+
+     async function fetchdata(){
+            let temp = await fetch('https://easy-plum-crane-slip.cyclic.app/data');
+            let data = await temp.json();
+            displaydata(data)
+     }
+    function displaydata(data){
+        
+        try{
+          document.querySelector("#card").innerHTML="";
+          if(data.length==0){
+            document.querySelector("#card").innerHTML="No Matched found";
+          }
+          data?.forEach((ele,i)=>{
+           let row=document.createElement("div");
+           let url=document.createElement("img");
+           url.style.width="200px";
+           url.src=ele.image_url;
+           let name=document.createElement("p");
+           name.innerHTML=ele.book_name;
+           let author=document.createElement("p");
+           author.innerHTML=ele.author;
+           let genre=document.createElement("p");
+           genre.innerHTML=ele.genre;
+           let edition=document.createElement("p");
+           edition.innerHTML=ele.edition;
+           let publisher=document.createElement("p");
+           publisher.innerHTML=ele.publisher;
+           let cost=document.createElement("p");
+           cost.innerHTML=ele.cost;
+
+           let del=document.createElement("td");
+           let delbut=document.createElement("button");
+           delbut.innerText="Del";
+           delbut.onclick=function(){}
+
+           del.append(delbut);
+
+           row.append(url,name,author,genre,edition,publisher,cost,del);
+           document.querySelector("#card").append(row)
+          })
+        }catch(e){
+            console.log(e)
+        }
+    }
+ 
+    //data filter
+    async function changegenre(){
+        let check=document.querySelector("#genre").value;
+        try{
+            if(check!="--"){
+                let temp = await fetch(`https://easy-plum-crane-slip.cyclic.app/data?genre=${check}`);
+                let data = await temp.json();
+                console.log(data)
+                displaydata(data);
+                console.log("done")
+            }
+            else{
+                fetchdata()
+            }
+      
+        }
+        catch(e){
+            console.log(e)
+        }
+            
+    }
+// cost 
+    async function pricefun(){
+        let check=document.querySelector("#cost").value;
+        try{
+            if(check!="--"){
+                let temp = await fetch(`https://easy-plum-crane-slip.cyclic.app/data?_sort=cost&&_order=${check}`);
+                let data = await temp.json();
+                console.log(data)
+                displaydata(data);
+                console.log("done")
+            }
+            else{
+                fetchdata()
+            }
+      
+        }
+        catch(e){
+            console.log(e)
+        }
+            
+    }
+
+
+
+
+</script>
