@@ -66,8 +66,11 @@
 
            let del=document.createElement("td");
            let delbut=document.createElement("button");
-           delbut.innerText="Del";
-           delbut.onclick=function(){}
+           delbut.innerText="Borrow";
+           delbut.onclick=function(){
+                alert(ele.book_name+" of cost "+ele.cost+ " borrowed Success")
+            
+           }
 
            del.append(delbut);
 
@@ -86,9 +89,9 @@
             if(check!="--"){
                 let temp = await fetch(`https://easy-plum-crane-slip.cyclic.app/data?genre=${check}`);
                 let data = await temp.json();
-                console.log(data)
+          
                 displaydata(data);
-                console.log("done")
+             
             }
             else{
                 fetchdata()
