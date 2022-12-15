@@ -8,19 +8,149 @@
     <link rel="stylesheet" href="./styles/admin.css">
 </head>
 <body>
+    <div id="navbar">
+        <button>logout</button>
+
+    </div>
     <div id="main-body">
-        <a href="./admin.html">Admin</a>
-        <a href="./user.html"> User</a>
+        <h3>Create Item</h3>
+        <form onsubmit="createdata()">
+            <label>URL</label>
+            <input type="text" id="url" placeholder="Book Cover Image"/>
+            <label for="">Name</label>
+            <input type="text" id="name" placeholder="Name of the book"/>
+            <label for="">Author</label>
+            <input type="text" id="author" placeholder="Author of the book"/>
+            <label for="genre">Genre</label>
+            <select name="genre" id="genre">
+                <option value="--">--</option>
+                <option value="Science">Science</option>
+                <option value="Fiction">Fiction</option>
+                <option value="History">History</option>
+                <option value="Tech">Tech</option>
+                <option value="Business">Business</option>
+            </select>
+            <label for="edition">Edition</label>
+            <select name="edition" id="edition">
+                <option value="--">--</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+            </select>
+            <label for="">Publisher</label>
+            <input type="text" id="publisher" placeholder="Publisher"/>
+            <label for="">Cost</label>
+            <input type="number" id="cost" placeholder="Cost"/>
+            <input type="submit" id="submit" />
+       </form>
+      
+     </div>
+     <div id="userdata">
+            <table>
+                    <thead>
+                        <td>ID</td>
+                        <td>URL</td>
+                        <td>Name</td>
+                        <td>Author</td>
+                        <td>Genre</td>
+                        <td>Edition</td>
+                        <td>Publisher</td>
+                        <td>Cost</td>
+                        <td>Edit</td>
+                        <td>Delete</td>
+                    </thead>
+                    <tbody id="append-data">
+                
+                    </tbody>
+            </table>
      </div>
 </body>
 </html>
 <script>
      let token=JSON.parse(localStorage.getItem("token"))||null;
-     if(token){
-
-     }
-     else{
+     if(!token){
         window.location.href='./login.html';
      }
+    //createdata
+ function createdata(e){
+            event.preventDefault();
+            let url=document.querySelector("#url").value;
+            let name=document.querySelector("#name").value;
+            let author=document.querySelector("#author").value;
+            let genre=document.querySelector("#genre").value;
+            let edition=document.querySelector("#edition").value;
+            let publisher=document.querySelector("#publisher").value;
+            let cost=document.querySelector("#cost").value;
+            console.log(url,name,author,genre,edition,publisher,cost);
+            
+            if(url!=="" && name!="" && author!="" && genre!="--" && edition!="--" && publisher!="" 
+                 && cost!=""){
+                    fetch('https://easy-plum-crane-slip.cyclic.app/data',{
+                    method:"POST",
+                    headers:{
+                    "Content-Type": "application/json"
+                    },
+                    body:JSON.stringify({image_url:url,book_name:name,author:author,genre:genre,edition:edition,publisher:publisher,cost:cost,borrowed: false})
+                  }).then(e=>{alert("data saved"); window.location.reload();}).catch(e=>console.log(e))
+                 
+                 }
+                else{
+                    alert("All field Mandetory")
+                }
 
+    }
+
+    //calling data
+    fetchdata();
+
+
+
+    //fetching data
+    async function fetchdata(){
+        try{
+            let temp = await fetch('https://easy-plum-crane-slip.cyclic.app/data');
+            let data = await temp.json();
+            
+          data?.forEach((ele,i)=>{
+           let row=document.createElement("tr");
+           let id=document.createElement("td");
+           id.innerHTML=ele.id;
+           let url=document.createElement("td");
+           url.innerHTML=ele.image_url;
+           let name=document.createElement("td");
+           name.innerHTML=ele.book_name;
+           let author=document.createElement("td");
+           author.innerHTML=ele.author;
+           let genre=document.createElement("td");
+           genre.innerHTML=ele.genre;
+           let edition=document.createElement("td");
+           edition.innerHTML=ele.edition;
+           let publisher=document.createElement("td");
+           publisher.innerHTML=ele.publisher;
+           let cost=document.createElement("td");
+           cost.innerHTML=ele.cost;
+           let edit=document.createElement("td");
+           edit.innerHTML="";
+
+           let del=document.createElement("td");
+           let delbut=document.createElement("button");
+           delbut.innerText="Del";
+           delbut.onclick=function(){
+            fetch(`https://easy-plum-crane-slip.cyclic.app/data/${ele.id}`,{
+                method:"DELETE",
+                headers:{
+                    "Content-Type": "application/json"
+                    }
+            }).then(e=>{alert("Deleted Successfully");window.location.reload()}).catch(e=>console.log(e))
+           }
+
+           del.append(delbut);
+
+           row.append(id,url,name,author,genre,edition,publisher,cost,edit,del);
+           document.querySelector("#append-data").append(row)
+          })
+        }catch(e){
+            console.log(e)
+        }
+    }
 </script>
