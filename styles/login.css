@@ -1,0 +1,28 @@
+
+body{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#main-body{
+    width: 300px;
+    height: 200px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+button{
+    color: white;
+    background-color: black;
+    font-size: 22px;
+    border-radius: 5px;
+}
+button:hover{
+    color: green;
+    cursor: pointer;
+}

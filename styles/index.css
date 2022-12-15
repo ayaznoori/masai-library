@@ -1,0 +1,26 @@
+body{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#main-body{
+    width: 300px;
+    height: 300px;
+    background-color: black;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+a{
+    font-size: 40px;
+    color: white;
+    text-decoration: none;
+}
+a:hover{
+    cursor: pointer;
+    color: green;
+}

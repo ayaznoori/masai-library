@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./styles/login.css">
+</head>
+<body>
+    <div id="main-body">
+        <h3>Admin Login</h3>
+        <input type="email" id="email" placeholder="Enter Email id here"/>
+        <input type="password" id="password" placeholder="Password"/>
+        <button onclick="submit()" >Login</button>
+     </div>
+</body>
+</html>
+<script>
+   
+  async function submit(){
+     let uemail=document.querySelector("#email").value;
+     let upassword=document.querySelector("#password").value;
+    try{
+        let check= await fetch('https://reqres.in/api/login',{
+        method:"POST",
+        headers:{
+           "Content-Type": "application/json"
+        },
+        body:JSON.stringify({email:uemail,password:upassword})
+        })
+        let token= await check.json();
+        if(token.error){
+            alert(token.error)
+        }
+        else{
+            localStorage.setItem("token",JSON.stringify(token))
+            window.location.href="./admin.html"
+        }
+    }
+    catch(e){
+        console.log(e)
+    }
+
+   }
+
+
+</script>

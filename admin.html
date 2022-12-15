@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <link rel="stylesheet" href="./styles/admin.css">
+</head>
+<body>
+    <div id="main-body">
+        <a href="./admin.html">Admin</a>
+        <a href="./user.html"> User</a>
+     </div>
+</body>
+</html>
+<script>
+     let token=JSON.parse(localStorage.getItem("token"))||null;
+     if(token){
+
+     }
+     else{
+        window.location.href='./login.html';
+     }
+
+</script>
